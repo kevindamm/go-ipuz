@@ -1,5 +1,9 @@
 package ipuz
 
+import (
+	"encoding/json"
+)
+
 type Crossword struct {
 	Metadata
 
@@ -8,6 +12,35 @@ type Crossword struct {
 	Solution    [][]CrosswordValue  `json:"solution"`
 	AcrossClues []Clue
 	DownClues   []Clue
+}
+
+func (cw *Crossword) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Dimensions CrosswordDimensions`json:"dimensions"`
+		Puzzle      [][]LabeledCell     `json:"puzzle"`
+		Solution    [][]CrosswordValue  `json:"solution"`
+	}{
+		Dimensions:       cw.Dimensions,
+		Puzzle: [][]LabeledCell{},
+		Solution: [][]CrosswordValue{},
+	})
+}
+
+func (cw *Crossword) UnmarshalJSON(data []byte) error {
+	type Alias Crossword
+	aux := &struct {
+		AcrossClues []Clue
+		DownClues []Clue
+		*Alias
+	}{
+		Alias: (*Alias)(cw),
+	}
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	cw.AcrossClues = aux.AcrossClues
+	cw.DownClues = aux.DownClues
+	return nil
 }
 
 type CrosswordDimensions struct {
