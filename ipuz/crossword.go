@@ -9,6 +9,7 @@ type Crossword struct {
 
 	Dimensions  CrosswordDimensions `json:"dimensions"`
 	Puzzle      [][]LabeledCell     `json:"puzzle"`
+	Saved       [][]CrosswordValue  `json:"saved"`
 	Solution    [][]CrosswordValue  `json:"solution"`
 	AcrossClues []Clue
 	DownClues   []Clue

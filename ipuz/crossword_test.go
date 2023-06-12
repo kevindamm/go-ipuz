@@ -5,6 +5,21 @@ import (
 	"testing"
 )
 
+// TODO testing
+// dimensions and reading Puzzle
+// . LabeledCell as int
+// . LabeledCell as string
+// . LabeledCell as { cell: int, style: StyleSpec }
+// dimensions and reading Solution
+// . CrosswordValue as "#" block in solution
+// . CrosswordValue as /[A-Z]{1}/ from string
+// . CrosswordValue as {
+// dimensions and reading Saved
+// . CrosswordValue as "#" (must match block in Puzzle)
+// . CrosswordValue as /[A-Z]{1} from string
+// reading AcrossClues (decoded from clues["across"])
+// reading DownClues (decoded from clues["down"])
+
 func TestCrossword_MarshalJSON(t *testing.T) {
 	type fields struct {
 		Metadata    Metadata
