@@ -1,7 +1,7 @@
-package ipuz
+package crossword
 
 import (
-	"reflect"
+	"bytes"
 	"testing"
 )
 
@@ -20,40 +20,27 @@ import (
 // reading AcrossClues (decoded from clues["across"])
 // reading DownClues (decoded from clues["down"])
 
-func TestCrossword_MarshalJSON(t *testing.T) {
-	type fields struct {
-		Metadata    Metadata
-		Dimensions  CrosswordDimensions
-		Puzzle      [][]LabeledCell
-		Solution    [][]CrosswordValue
-		AcrossClues []Clue
-		DownClues   []Clue
-	}
+func TestLabeledCell_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name    string
-		fields  fields
+		fields  LabeledCell
 		want    []byte
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{"zero value", LabeledCell{0, "", nil}, []byte("0"), false},
+		{"labeled index", LabeledCell{Index: 42}, []byte("42"), false},
+		
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cw := &Crossword{
-				Metadata:    tt.fields.Metadata,
-				Dimensions:  tt.fields.Dimensions,
-				Puzzle:      tt.fields.Puzzle,
-				Solution:    tt.fields.Solution,
-				AcrossClues: tt.fields.AcrossClues,
-				DownClues:   tt.fields.DownClues,
-			}
+			var cw LabeledCell
 			got, err := cw.MarshalJSON()
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Crossword.MarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("LabeledCell.MarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Crossword.MarshalJSON() = %v, want %v", got, tt.want)
+			if !bytes.Equal(got, tt.want) {
+				t.Errorf("LabeledCell.MarshalJSON() = %v, want %v", got, tt.want)
 			}
 		})
 	}
